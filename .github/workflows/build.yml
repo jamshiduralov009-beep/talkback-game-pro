@@ -14,8 +14,8 @@ jobs:
         run: chmod +x gradlew
       - name: Build APK
         run: ./gradlew assembleDebug
-      - name: Upload APK
+      - name: Find and Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Talkback-Game-APK
-          path: "**/*.apk"
+          path: app/build/outputs/apk/debug/*.apk
