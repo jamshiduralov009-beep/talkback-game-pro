@@ -1,8 +1,10 @@
-name: Build Talkback Game Pro
+name: Build and Release APK
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: set up JDK 17
@@ -14,7 +16,12 @@ jobs:
         run: chmod +x gradlew
       - name: Build APK
         run: ./gradlew assembleDebug
-      - name: Find and Upload APK
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: app/build/outputs/apk/debug/*.apk
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Talkback-Game-APK
